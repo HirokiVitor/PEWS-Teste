@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Pacientes - PEWS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Container Principal -->
+    <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden mt-6 p-6">
+        
+        <!-- Logo -->
+        <div class="flex justify-center mb-4">
+            <img src="https://via.placeholder.com/150x50?text=PEWS" alt="PEWS Logo">
+        </div>
+
+        <!-- Título -->
+        <h1 class="text-xl font-bold text-center text-gray-800">Lista de Pacientes</h1>
+
+        <!-- Barra de Pesquisa -->
+        <div class="mt-4 flex items-center space-x-2">
+            <input type="text" id="search" placeholder="Pesquisar paciente..." 
+                class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-400"
+                onkeyup="filtrarPacientes()">
+            <a href="{% url 'cadastrar_paciente' %}" class="bg-blue-500 text-white px-4 py-2 rounded">
+                +
+            </a>                   
+        </div>
+
+        {% if user.is_superuser or user.groups.all.0.name == "Administrador" %}
+            <a href="{% url 'cadastrar_funcionario' %}" class="block bg-green-500 text-white px-4 py-2 rounded-md mt-4">
+                Cadastrar Funcionário
+            </a>
+        {% endif %}
+
+        {% if user.is_superuser or user.groups.all.0.name == "Administrador" %}
+            <a href="{% url 'historico_pacientes' %}" class="block bg-gray-500 text-white px-4 py-2 rounded-md mt-4">
+                Ver Histórico de Altas
+            </a>
+        {% endif %}
+
+
+        <!-- Ícone de Perfil no Canto Superior Direito -->
+        <div class="absolute top-4 right-4">
+            <a href="{% url 'perfil_usuario' %}" title="Perfil">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-600 hover:text-gray-800" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 4a4 4 0 100 8 4 4 0 000-8zM2 16a6 6 0 0112 0H2z" clip-rule="evenodd"/>
+                </svg>
+            </a>
+        </div>
+        
+        <!-- Lista de Pacientes -->
+        <div id="lista_pacientes" class="mt-4 space-y-3">
+            {% for paciente in pacientes %}
+                <div class="bg-gray-100 p-4 rounded-md shadow-md mb-2">
+                    <p><strong>Nome:</strong> {{ paciente.nome }}</p>
+                    <p><strong>Leito:</strong> {{ paciente.leito }}</p>
+                    <p><strong>Diagnóstico:</strong> {{ paciente.diagnostico }}</p>
+                    <a href="{% url 'perfil_paciente' paciente.id %}" class="bg-blue-500 text-white px-4 py-2 rounded-md">
+                        Ver Perfil
+                    </a>
+                </div>
+
+            {% empty %}
+                <p class="text-center text-gray-600 mt-4">Nenhum paciente cadastrado.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        function filtrarPacientes() {
+            let termo = document.getElementById("search").value.toLowerCase();
+            let pacientes = document.getElementById("lista_pacientes").children;
+            for (let paciente of pacientes) {
+                let nome = paciente.innerText.toLowerCase();
+                paciente.style.display = nome.includes(termo) ? "block" : "none";
+            }
+        }
+    </script>
+
+</body>
+</html>

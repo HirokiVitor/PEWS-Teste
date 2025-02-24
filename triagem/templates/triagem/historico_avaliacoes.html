@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico de Avaliações</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+    <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden mt-6 p-6">
+        <!-- Botão de voltar -->
+        <a href="{% url 'perfil_paciente' paciente.id %}" class="text-gray-600 text-xl">⬅</a>
+
+        <h1 class="text-2xl font-bold text-center text-gray-800">Histórico de Avaliações</h1>
+
+        <!-- Filtro de ordenação -->
+        <form method="GET" class="flex justify-between items-center bg-gray-200 p-2 rounded-md mt-4">
+            <label class="text-gray-700 font-bold">Filtrar por:</label>
+            <select name="filtro" class="border p-2 rounded-md">
+                <option value="data" {% if filtro_selecionado == "data" %}selected{% endif %}>Data</option>
+                <option value="score" {% if filtro_selecionado == "score" %}selected{% endif %}>Pontuação</option>
+            </select>
+            <select name="ordem" class="border p-2 rounded-md">
+                <option value="asc" {% if ordem_selecionada == "asc" %}selected{% endif %}>Crescente</option>
+                <option value="desc" {% if ordem_selecionada == "desc" %}selected{% endif %}>Decrescente</option>
+            </select>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md">Filtrar</button>
+        </form>
+
+        <!-- Lista de avaliações -->
+        <div class="mt-4">
+            {% for avaliacao in avaliacoes %}
+                <div class="bg-gray-100 p-4 mb-2 rounded-md shadow">
+                    <p><strong>Data:</strong> {{ avaliacao.data|date:"d/m/Y H:i" }}</p>
+                    <p><strong>Pontuação PEWS:</strong> {{ avaliacao.score }}</p>
+                    <p><strong>Frequência Cardíaca:</strong> {{ avaliacao.freq_cardiaca }} bpm</p>
+                    <p><strong>Frequência Respiratória:</strong> {{ avaliacao.freq_respiratoria }} rpm</p>
+                    <p><strong>Neurológico:</strong> {{ avaliacao.av_neuro }}</p>
+                    <p><strong>Cardiovascular:</strong> {{ avaliacao.av_cardio }}</p>
+                    <p><strong>Respiratório:</strong> {{ avaliacao.av_resp }}</p>
+                    {% if avaliacao.extras %}
+                        <p><strong>Extras:</strong> {{ avaliacao.extras }}</p>
+                    {% endif %}
+                </div>
+                <div class="bg-gray-100 p-4 rounded-md shadow-md mb-2">
+                    <p><strong>Data:</strong> {{ avaliacao.data }}</p>
+                    <p><strong>Score:</strong> {{ avaliacao.score }}</p>
+            
+                    {% if user.is_superuser or user.groups.all.0.name == "Administrador" %}
+                        <form method="POST" action="{% url 'remover_avaliacao' avaliacao.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="bg-red-500 text-white px-2 py-1 rounded-md mt-2">
+                                Remover
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+            {% empty %}
+                <p class="text-center text-gray-600 mt-4">Nenhuma avaliação encontrada.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+</body>
+</html>

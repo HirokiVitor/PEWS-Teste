@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Paciente</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+    <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden mt-6 p-6">
+        <!-- Botão de voltar -->
+        <a href="{% url 'home' %}" class="text-gray-600 text-xl">⬅</a>
+
+        <!-- Título -->
+        <h1 class="text-xl font-bold text-center text-gray-800">Cadastrar Paciente</h1>
+        <p class="text-center text-gray-600 mb-4">Insira os dados do paciente</p>
+
+        <!-- Formulário -->
+        <form method="POST" class="space-y-3">
+            {% csrf_token %}
+
+            <label class="block text-gray-700">Nome</label>
+            <input type="text" name="nome" placeholder="Insira o nome do paciente" class="w-full px-3 py-2 border rounded-md" required>
+
+            <label class="block text-gray-700">Data de Nascimento</label>
+            <input type="date" name="data_internacao" class="w-full px-3 py-2 border rounded-md" required>
+
+            <label class="block text-gray-700">Leito</label>
+            <input type="text" name="leito" placeholder="Insira o leito" class="w-full px-3 py-2 border rounded-md" required>
+
+            <label class="block text-gray-700">DIH</label>
+            <input type="text" name="dih" placeholder="Insira o DIH" class="w-full px-3 py-2 border rounded-md" required>
+
+            <label class="block text-gray-700">Diagnóstico</label>
+            <textarea name="diagnostico" placeholder="Descreva o diagnóstico..." class="w-full px-3 py-2 border rounded-md" required></textarea>
+
+            <button type="submit" class="w-full bg-blue-500 text-white px-4 py-2 rounded">
+                Cadastrar paciente
+            </button>
+        </form>
+    </div>
+
+</body>
+</html>

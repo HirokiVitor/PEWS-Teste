@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pacientes de Alta</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex flex-col items-center py-6">
+
+    <h1 class="text-2xl font-bold mb-4">Histórico de Pacientes de Alta</h1>
+
+    {% for paciente in pacientes %}
+        <div class="bg-white p-4 rounded-md shadow-md mb-2 w-96">
+            <p><strong>Nome:</strong> {{ paciente.nome }}</p>
+            <p><strong>Leito:</strong> {{ paciente.leito }}</p>
+            <p><strong>Data da Internação:</strong> {{ paciente.data_internacao }}</p>
+            <p><strong>Diagnóstico:</strong> {{ paciente.diagnostico }}</p>
+        </div>
+    {% empty %}
+        <p class="text-gray-500">Nenhum paciente recebeu alta ainda.</p>
+    {% endfor %}
+
+    <a href="{% url 'home' %}" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md">
+        Voltar para Home
+    </a>
+
+</body>
+</html>

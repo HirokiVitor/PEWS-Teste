@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finalizar Avaliação PEWS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+    <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden mt-6 p-6">
+        <a href="{% url 'perfil_paciente' paciente.id %}" class="text-gray-600 text-xl">⬅</a>
+
+        <h1 class="text-xl font-bold text-center text-gray-800">Insira os dados do paciente</h1>
+
+        <form method="POST" action="{% url 'segunda_etapa_pews' paciente.id %}" class="space-y-3">
+            {% csrf_token %}
+
+            <!-- Avaliação Neurológica -->
+            <fieldset class="bg-gray-200 p-4 rounded-md">
+                <legend class="font-bold">Avaliação Neurológica</legend>
+                <label><input type="radio" name="av_neuro" value="0" required> Ativo</label><br>
+                <label><input type="radio" name="av_neuro" value="1"> Sonolento / Hipoativo</label><br>
+                <label><input type="radio" name="av_neuro" value="2"> Irritado</label><br>
+                <label><input type="radio" name="av_neuro" value="3"> Letárgico / Obnubilado ou resposta reduzida à dor</label>
+            </fieldset>
+
+            <!-- Avaliação Cardiovascular -->
+            <fieldset class="bg-gray-200 p-4 rounded-md">
+                <legend class="font-bold">Avaliação Cardiovascular</legend>
+                <label><input type="radio" name="av_cardio" value="0" required> Corado ou TEC 1-2 seg</label><br>
+                <label><input type="radio" name="av_cardio" value="1"> Pálido ou TEC 3 seg ou FC acima do limite</label><br>
+                <label><input type="radio" name="av_cardio" value="2"> Moteado ou TEC 4 seg ou FC ≥ 20 bpm acima</label><br>
+                <label><input type="radio" name="av_cardio" value="3"> Acinzentado / cianótico ou TEC ≥ 5 seg ou FC ≥ 30 bpm acima</label>
+            </fieldset>
+
+            <!-- Avaliação Respiratória -->
+            <fieldset class="bg-gray-200 p-4 rounded-md">
+                <legend class="font-bold">Avaliação Respiratória</legend>
+                <label><input type="radio" name="av_resp" value="0" required> FR normal para idade, sem retração</label><br>
+                <label><input type="radio" name="av_resp" value="1"> FR acima do limite, uso de musculatura acessória ou O2 ≥ 30%</label><br>
+                <label><input type="radio" name="av_resp" value="2"> FR ≥ 20 rpm acima do limite, retrações intercostais ou O2 ≥ 40%</label><br>
+                <label><input type="radio" name="av_resp" value="3"> FR ≥ 5 rpm abaixo do limite, retrações severas ou O2 ≥ 50%</label>
+            </fieldset>
+
+            <!-- Campos Extras -->
+            <fieldset class="bg-gray-200 p-4 rounded-md">
+                <legend class="font-bold">Extras</legend>
+                <label><input type="checkbox" name="extras" value="Nebulização de resgate"> Nebulização de resgate em 15 minutos</label><br>
+                <label><input type="checkbox" name="extras" value="3 episódios ou mais de emese"> 3 episódios ou mais de emese no pós-operatório</label>
+            </fieldset>
+
+            <button type="submit" class="w-full bg-blue-500 text-white px-4 py-2 rounded">
+                Confirmar dados
+            </button>
+        </form>
+    </div>
+
+</body>
+</html>
